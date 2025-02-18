@@ -1,5 +1,6 @@
 # Credits: Deepwings project
 # Source: https://github.com/machine-shop/deepwings/blob/master/deepwings/method_features_extraction/image_processing.py#L156-L245
+# No license specified, MIT license assumed
 
 import numpy as np
 
