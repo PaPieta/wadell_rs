@@ -21,7 +21,7 @@
 
 import math
 import random
-from typing import Sequence
+from typing import Sequence, Optional
 
 
 # Data conventions: A point is a pair of floats (x, y). A circle is a triple of floats (center x, center y, radius).
@@ -35,13 +35,13 @@ from typing import Sequence
 # Initially: No boundary points known
 def make_circle(
     points: Sequence[tuple[float, float]],
-) -> tuple[float, float, float] | None:
+) -> Optional[tuple[float, float, float]]:
     # Convert to float and randomize order
     shuffled: list[tuple[float, float]] = [(float(x), float(y)) for (x, y) in points]
     random.shuffle(shuffled)
 
     # Progressively add points to circle or recompute circle
-    c: tuple[float, float, float] | None = None
+    c: Optional[tuple[float, float, float]] = None
     for i, p in enumerate(shuffled):
         if c is None or not is_in_circle(c, p):
             c = _make_circle_one_point(shuffled[: i + 1], p)
@@ -69,8 +69,8 @@ def _make_circle_two_points(
     q: tuple[float, float],
 ) -> tuple[float, float, float]:
     circ: tuple[float, float, float] = make_diameter(p, q)
-    left: tuple[float, float, float] | None = None
-    right: tuple[float, float, float] | None = None
+    left: Optional[tuple[float, float, float]] = None
+    right: Optional[tuple[float, float, float]] = None
     px, py = p
     qx, qy = q
 
@@ -81,7 +81,7 @@ def _make_circle_two_points(
 
         # Form a circumcircle and classify it on left or right side
         cross: float = _cross_product(px, py, qx, qy, r[0], r[1])
-        c: tuple[float, float, float] | None = make_circumcircle(p, q, r)
+        c: Optional[tuple[float, float, float]] = make_circumcircle(p, q, r)
         if c is None:
             continue
         elif cross > 0.0 and (
@@ -122,7 +122,7 @@ def make_diameter(
 
 def make_circumcircle(
     a: tuple[float, float], b: tuple[float, float], c: tuple[float, float]
-) -> tuple[float, float, float] | None:
+) -> Optional[tuple[float, float, float]]:
     # Mathematical algorithm from Wikipedia: Circumscribed circle
     ox: float = (min(a[0], b[0], c[0]) + max(a[0], b[0], c[0])) / 2
     oy: float = (min(a[1], b[1], c[1]) + max(a[1], b[1], c[1])) / 2
