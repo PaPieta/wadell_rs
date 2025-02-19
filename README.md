@@ -91,7 +91,7 @@ roundness_value = roundness.calculate_roundness(
 
 This implementation has a handful of noticeable differences to the original implementation provided in matlab. By far, those cover primarily refactoring of the code, but there is also a few algorithmic differences:
 
-* Originally, the boundary curve was smoothed in ```nonparametric_fitting``` function using Matlab ```smooth(...,'loess')``` function. This approach causes inconsistencies on the ends of the vector creating a boundary, as it doesn't recognize it as a closed loop. Instead, we propose a well-tested image processing method of snake/contour smoothing through energy minimization [1,2]. It can be slower for big boundaries, but seamlessly deals with the closed contours.
+* Originally, the boundary curve was smoothed in ```nonparametric_fitting``` function using Matlab ```smooth(...,'loess')``` function. This approach causes inconsistencies on the ends of the vector creating a boundary, as it doesn't recognize it as a closed loop. Instead, we propose a well-tested image processing method of snake/contour smoothing through energy minimization [2,3]. It can be slower for big boundaries, but seamlessly deals with the closed contours.
 
 * Originally, the ```concave_convex``` function detected middle point position in relation to two edge points and object center. We changed it to simply calculating the angle between three points. This lets us cleanly calculate convexity in one go. No decrease in result quality was observed due to this change
 
@@ -102,6 +102,10 @@ This implementation has a handful of noticeable differences to the original impl
 * In ```discretize_boundary``` we make sure to correctly handle boundary ends, so that the last two points are not very close together
 
 * Most of the functions are adjusted to run on single objects, and not on all image objects as one. This allows the user to choose objects of interest in case the image is very big or contains noise. The only exception is ```common.characterize_objects```, there we follow the style of methods similar to ```regionprops```, characterizing all objects at once. This part is fast enough to allow that.
+
+>[2]. KASS, M., et al. “SNAKES - ACTIVE CONTOUR MODELS.” International Journal of Computer Vision, vol. 1, no. 4, 1987, pp. 321–31,https://doi.org/10.1007/BF00133570.
+>
+>[3]. Xu, Chenyang & Pham, Dzung & Prince, Jerry. (2000). Image Segmentation Using Deformable Models.Handbook of Medical Imaging: Volume 2. Medical Image Processing and Analysis.
 
 ## External sources
 
