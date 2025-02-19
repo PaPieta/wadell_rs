@@ -14,4 +14,4 @@ dynamic = ["dependencies"]
 dependencies = {file = ["requirements.txt"]}
 
 [tool.setuptools]
-packages = ["wadell_rs"]
+packages = ["wadell_rs", "wadell_rs.external"]
