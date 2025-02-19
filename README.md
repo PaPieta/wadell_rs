@@ -1,6 +1,6 @@
 # 2D Wadell roundness and sphericity in Python
 
-Python implementation of Zheng and Hryciw [1] algorithm for Wadell roundness and sphericity calculation. Original implementation in Matlab can be found [here](https://se.mathworks.com/matlabcentral/fileexchange/60651-particle-roundness-and-sphericity-computation)
+Python implementation of Zheng and Hryciw [1] algorithm for Wadell roundness and sphericity calculation. Original implementation in Matlab can be found [here](https://se.mathworks.com/matlabcentral/fileexchange/60651-particle-roundness-and-sphericity-computation).
 
 This version is refactored/updated to enable simpler use and provide more accurate results.
 
@@ -10,21 +10,25 @@ For theoretical details see original paper:
 **For in-depth introduction to the library, visit the [CodeOcean capsule]() (TODO)**
 
 ## Installation
-```
+
+``` python
 pip install git+https://github.com/PaPieta/wadell_rs.git
 ```
 
 ## Prerequisites
 
 Library requires ```numpy```, ```scipy```, ```scikit-image```, ```scikit-learn``` and ```edt```. They can be installed via provided requirements file:
+
 ```sh
   pip install -r requirements.txt
 ```
 
-
 ## How to use
 
+>For in-depth introduction, visit the [CodeOcean capsule]() (TODO).
+
 The first step is always to load, and pre-process the image.
+
 ``` python
 from skimage.measure import label
 import edt
@@ -34,12 +38,12 @@ img = ... # Load/provide binary image
 label_img = label(img) # Assign labels to binary objects
 edt_img = edt.edt(img) # Calculate distance transform
 
-obj_dict_list = common.characterize_objects(label_img, edt_img) # Collect characteristics about objects
+obj_dict_list = common.characterize_objects(label_img, edt_img) # Collect characteristics about binary objects
 ```
 
 ### Sphericity
 
-Choose one of the objects, and sphericity methods and calculate.
+Choose one of the binary objects, and one of the sphericity definitions and calculate.
 
 ``` python
 from wadell_rs import sphericity
@@ -47,11 +51,16 @@ from wadell_rs import sphericity
 obj_dict = obj_dict_list[0]
 area_sphericity = sphericity.calculate_sphericity(obj_dict, method="area")
 ```
-Available methods:  ```area```, ```diameter```, ```circle_ratio```, ```perimeter```, ```width_to_length```. See documentation or [1] for details.
+
+Available definitions:  ```area```, ```diameter```, ```circle_ratio```, ```perimeter```, ```width_to_length```. See documentation or [1] for details.
+
+**Example result:**
+
+<img src="doc_img\sphericity_demo.png" alt="drawing" width="500"/>
 
 ### Roundness
 
-Choose one of the objects, define parameters and run.
+Choose one of the binary objects, define parameters and run.
 
 ``` python
 from wadell_rs import roundness
@@ -73,15 +82,30 @@ roundness_value = roundness.calculate_roundness(
     )
 ```
 
-For in-depth introduction, visit the [CodeOcean capsule]() (TODO).
+**Example result:**
+
+<img src="doc_img\roundness_demo.png" alt="drawing" width="500"/>
+
 
 ## Differences compared to original Matlab implementation
 
-TODO
+This implementation has a handful of noticeable differences to the original implementation provided in matlab. By far, those cover primarily refactoring of the code, but there is also a few algorithmic differences:
+
+* Originally, the boundary curve was smoothed in ```nonparametric_fitting``` function using Matlab ```smooth(...,'loess')``` function. This approach causes inconsistencies on the ends of the vector creating a boundary, as it doesn't recognize it as a closed loop. Instead, we propose a well-tested image processing method of snake/contour smoothing through energy minimization [1,2]. It can be slower for big boundaries, but seamlessly deals with the closed contours.
+
+* Originally, the ```concave_convex``` function detected middle point position in relation to two edge points and object center. We changed it to simply calculating the angle between three points. This lets us cleanly calculate convexity in one go. No decrease in result quality was observed due to this change
+
+* In circle fitting to corners, there was an issue where sometimes first and last convex points in a boundary were mistakenly assigned two separate circles, and had to be treated separately at the end of the fitting algorithm. We mitigate this problem by re-indexing the convex points so that they start at:
+  * A convex point right after a concave section, or
+  * The most flat convex section if no concave section is present
+
+* In ```discretize_boundary``` we make sure to correctly handle boundary ends, so that the last two points are not very close together
+
+* Most of the functions are adjusted to run on single objects, and not on all image objects as one. This allows the user to choose objects of interest in case the image is very big or contains noise. The only exception is ```common.characterize_objects```, there we follow the style of methods similar to ```regionprops```, characterizing all objects at once. This part is fast enough to allow that.
 
 ## External sources
 
-* Sphere fitting to points has been sourced from [sciki-guess library](https://gitlab.com/madphysicist/scikit-guess/-/tree/master)
+* Sphere fitting to points has been sourced from [scikit-guess library](https://gitlab.com/madphysicist/scikit-guess/-/tree/master)
 * Boundary point extraction has been sourced from the [Deepwings project](https://github.com/machine-shop/deepwings/tree/master)
 * Smallest enclosing circle calculation has been sourced from [Project Nayuki](https://www.nayuki.io/page/smallest-enclosing-circle)
 
