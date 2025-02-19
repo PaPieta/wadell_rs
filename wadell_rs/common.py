@@ -2,9 +2,9 @@ import numpy as np
 
 from skimage.measure import regionprops
 
-from wadell_rs.external import boundary
-from wadell_rs.external import smallestenclosingcircle as sec
-from wadell_rs import util
+from .external import boundary
+from .external import smallestenclosingcircle as sec
+from . import util
 
 
 def characterize_objects(label_img, dist_img):

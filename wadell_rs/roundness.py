@@ -1,7 +1,7 @@
 import numpy as np
 
-from wadell_rs.external import nsphere
-from wadell_rs import common
+from .external import nsphere
+from . import common
 
 
 def calculate_roundness(
