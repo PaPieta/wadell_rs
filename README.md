@@ -7,7 +7,7 @@ This version is refactored/updated to enable simpler use and provide more accura
 For theoretical details see original paper:
 > [1]. Zheng, J., and R. D. Hryciw. “Traditional Soil Particle Sphericity, Roundness and Surface Roughness by Computational Geometry.” Geotechnique, vol. 65, no. 6, 2015, pp. 494–506, https://doi.org/10.1680/geot.14.P.192. 
 
-**For in-depth introduction to the library, visit the [CodeOcean capsule]() (TODO)**
+**For in-depth introduction to the library, visit the [CodeOcean capsule](https://codeocean.com/capsule/0576373/tree/v1)**
 
 ## Installation
 
@@ -25,7 +25,7 @@ Library requires ```numpy```, ```scipy```, ```scikit-image```, ```scikit-learn``
 
 ## How to use
 
->For in-depth introduction, visit the [CodeOcean capsule]() (TODO).
+>For in-depth introduction, visit the [CodeOcean capsule](https://codeocean.com/capsule/0576373/tree/v1).
 
 The first step is always to load, and pre-process the image.
 
