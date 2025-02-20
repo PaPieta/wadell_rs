@@ -276,7 +276,14 @@ def compute_corner_circles(
         rad_max_pos: (2,) float np.array
             Position of the max circle inscribed in the object
         circle_fit_thresh: float
-            Threshold for the circle fitting, defines how close the points have to be to the circle outline, (0-1) range"""
+            Threshold for the circle fitting, defines how close the points have to be to the circle outline, (0-1) range
+    Returns:
+        radii: (n,) float np.array
+            Radii of the detected corner circles
+        centers: (n,2) float np.array
+            Centers of the detected corner circles
+        point_idx_groups: list
+            List of used point indices for each corner circle"""
 
     point_idx_start = 0
     finish_idx = len(convex_points)
