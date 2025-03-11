@@ -16,7 +16,7 @@ def cart2pol(cart, center):
     pol = np.zeros(cart.shape)
     cart = cart - center
     pol[:, 0] = np.sqrt(cart[:, 0] ** 2 + cart[:, 1] ** 2)
-    pol[:, 1] = np.atan2(cart[:, 0], cart[:, 1])
+    pol[:, 1] = np.arctan2(cart[:, 0], cart[:, 1])
     return pol
 
 
