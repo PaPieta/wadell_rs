@@ -236,7 +236,7 @@ def concave_convex(keypoints):
     v1 = keypoints[1:-1] - keypoints[:-2]
     v2 = keypoints[2:] - keypoints[1:-1]
 
-    angle = np.atan2(
+    angle = np.arctan2(
         v1[:, 0] * v2[:, 1] - v1[:, 1] * v2[:, 0],
         v1[:, 0] * v2[:, 0] + v1[:, 1] * v2[:, 1],
     )
